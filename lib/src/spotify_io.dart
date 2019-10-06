@@ -4,11 +4,29 @@
 part of spotify;
 
 class SpotifyApi extends SpotifyApiBase {
-  SpotifyApi(SpotifyApiCredentials credentials) : super(credentials);
+  SpotifyApi(SpotifyApiCredentials credentials, {http.Client client})
+      : _client = client,
+        super(credentials);
+
+  http.Client _client;
+
+  @override
+  Future<String> _requestWrapper(String path,
+      Future<String> req(String url, Map<String, String> headers)) async {
+    if (_client == null) {
+      await _refreshToken();
+    }
+    var headers = _client != null
+        ? <String, String>{}
+        : {'Authorization': 'Bearer ${_apiToken.accessToken}'};
+    var url = '${SpotifyApiBase._baseUrl}/$path';
+
+    return req(url, headers);
+  }
 
   @override
   Future<String> _getImpl(String url, Map<String, String> headers) async {
-    var client = new http.Client();
+    var client = _client ?? new http.Client();
     var response = await client.get(url, headers: headers);
     return handleErrors(response);
   }
@@ -16,7 +34,7 @@ class SpotifyApi extends SpotifyApiBase {
   @override
   Future<String> _postImpl(
       String url, Map<String, String> headers, dynamic body) async {
-    var client = new http.Client();
+    var client = _client ?? new http.Client();
     var response = await client.post(url, headers: headers, body: body);
     return handleErrors(response);
   }
@@ -24,7 +42,7 @@ class SpotifyApi extends SpotifyApiBase {
   @override
   Future<String> _putImpl(
       String url, Map<String, String> headers, dynamic body) async {
-    var client = new http.Client();
+    var client = _client ?? new http.Client();
     var response = await client.put(url, headers: headers, body: body);
     return handleErrors(response);
   }
