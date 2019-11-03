@@ -211,7 +211,7 @@ Playlist _$PlaylistFromJson(Map<String, dynamic> json) {
     ..name = json['name'] as String
     ..owner = json['owner'] == null
         ? null
-        : User.fromJson(json['owner'] as Map<String, dynamic>)
+        : SpotifyUser.fromJson(json['owner'] as Map<String, dynamic>)
     ..public = json['public'] as bool
     ..snapshotId = json['snapshot_id'] as String
     ..tracks = (json['tracks'] as List)
@@ -237,7 +237,7 @@ PlaylistSimple _$PlaylistSimpleFromJson(Map<String, dynamic> json) {
     ..name = json['name'] as String
     ..owner = json['owner'] == null
         ? null
-        : User.fromJson(json['owner'] as Map<String, dynamic>)
+        : SpotifyUser.fromJson(json['owner'] as Map<String, dynamic>)
     ..public = json['public'] as bool
     ..snapshotId = json['snapshot_id'] as String
     ..tracksLink = json['tracks'] == null
@@ -353,8 +353,8 @@ TracksLink _$TracksLinkFromJson(Map<String, dynamic> json) {
     ..total = json['total'] as int;
 }
 
-User _$UserFromJson(Map<String, dynamic> json) {
-  return User()
+SpotifyUser _$SpotifyUserFromJson(Map<String, dynamic> json) {
+  return SpotifyUser()
     ..birthdate = json['birthdate'] as String
     ..country = json['country'] as String
     ..displayName = json['display_name'] as String

@@ -9,11 +9,11 @@ class Users extends EndpointPaging {
 
   Users(SpotifyApiBase api) : super(api);
 
-  Future<User> me() async {
+  Future<SpotifyUser> me() async {
     var jsonString = await _api._get('v1/me');
     var map = json.decode(jsonString);
 
-    return User.fromJson(map);
+    return SpotifyUser.fromJson(map);
   }
 
   Future<Player> currentlyPlaying() async {

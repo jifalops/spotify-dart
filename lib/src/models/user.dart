@@ -4,9 +4,10 @@
 part of spotify.models;
 
 @JsonSerializable(createToJson: false)
-class User extends Object implements UserPublic {
-  User() {}
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+class SpotifyUser extends Object implements UserPublic {
+  SpotifyUser() {}
+  factory SpotifyUser.fromJson(Map<String, dynamic> json) =>
+      _$SpotifyUserFromJson(json);
 
   /// The user's date-of-birth.
   ///

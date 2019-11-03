@@ -41,7 +41,7 @@ class Playlist extends Object implements PlaylistSimple {
   String name;
 
   /// The user who owns the playlist
-  User owner;
+  SpotifyUser owner;
 
   /// The playlist's public/private status: [true] the playlist is public,
   /// [false] the playlist is private, null the playlist status is not relevant.
@@ -99,7 +99,7 @@ class PlaylistSimple extends Object {
   String name;
 
   /// The user who owns the playlist
-  User owner;
+  SpotifyUser owner;
 
   /// The playlist's public/private status: [true] the playlist is public,
   /// [false] the playlist is private, null the playlist status is not relevant.

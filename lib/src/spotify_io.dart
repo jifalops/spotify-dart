@@ -4,21 +4,24 @@
 part of spotify;
 
 class SpotifyApi extends SpotifyApiBase {
-  SpotifyApi(SpotifyApiCredentials credentials, {http.Client client})
+  SpotifyApi(SpotifyApiCredentials credentials,
+      {oauth2.Client Function() client})
       : _client = client,
         super(credentials);
 
-  http.Client _client;
+  oauth2.Client Function() _client;
 
   @override
   Future<String> _requestWrapper(String path,
       Future<String> req(String url, Map<String, String> headers)) async {
     if (_client == null) {
       await _refreshToken();
+    } else if (_client().credentials.isExpired) {
+      _client().refreshCredentials();
     }
-    var headers = _client != null
-        ? <String, String>{}
-        : {'Authorization': 'Bearer ${_apiToken.accessToken}'};
+    var headers = _client() == null
+        ? {'Authorization': 'Bearer ${_apiToken.accessToken}'}
+        : <String, String>{};
     var url = '${SpotifyApiBase._baseUrl}/$path';
 
     return req(url, headers);
@@ -26,7 +29,7 @@ class SpotifyApi extends SpotifyApiBase {
 
   @override
   Future<String> _getImpl(String url, Map<String, String> headers) async {
-    var client = _client ?? new http.Client();
+    var client = _client() ?? new http.Client();
     var response = await client.get(url, headers: headers);
     return handleErrors(response);
   }
@@ -34,7 +37,7 @@ class SpotifyApi extends SpotifyApiBase {
   @override
   Future<String> _postImpl(
       String url, Map<String, String> headers, dynamic body) async {
-    var client = _client ?? new http.Client();
+    var client = _client() ?? new http.Client();
     var response = await client.post(url, headers: headers, body: body);
     return handleErrors(response);
   }
@@ -42,7 +45,7 @@ class SpotifyApi extends SpotifyApiBase {
   @override
   Future<String> _putImpl(
       String url, Map<String, String> headers, dynamic body) async {
-    var client = _client ?? new http.Client();
+    var client = _client() ?? new http.Client();
     var response = await client.put(url, headers: headers, body: body);
     return handleErrors(response);
   }
