@@ -9,6 +9,7 @@ part 'external_objects.dart';
 part 'album.dart';
 part 'artist.dart';
 part 'audio_feature.dart';
+part 'device.dart';
 part 'error.dart';
 part 'followers.dart';
 part 'image.dart';

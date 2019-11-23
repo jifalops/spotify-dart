@@ -136,6 +136,64 @@ AudioFeature _$AudioFeatureFromJson(Map<String, dynamic> json) {
     ..valence = (json['valence'] as num)?.toDouble();
 }
 
+SpotifyDevice _$SpotifyDeviceFromJson(Map<String, dynamic> json) {
+  return SpotifyDevice(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      type: _$enumDecodeNullable(_$DeviceTypeEnumMap, json['type']),
+      isActive: json['isActive'] as bool,
+      isPrivate: json['isPrivate'] as bool,
+      isRestricted: json['isRestricted'] as bool,
+      volume: json['volume'] as int);
+}
+
+Map<String, dynamic> _$SpotifyDeviceToJson(SpotifyDevice instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'type': _$DeviceTypeEnumMap[instance.type],
+      'isActive': instance.isActive,
+      'isPrivate': instance.isPrivate,
+      'isRestricted': instance.isRestricted,
+      'volume': instance.volume
+    };
+
+T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return enumValues.entries
+      .singleWhere((e) => e.value == source,
+          orElse: () => throw ArgumentError(
+              '`$source` is not one of the supported values: '
+              '${enumValues.values.join(', ')}'))
+      .key;
+}
+
+T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source);
+}
+
+const _$DeviceTypeEnumMap = <DeviceType, dynamic>{
+  DeviceType.computer: 'computer',
+  DeviceType.tablet: 'tablet',
+  DeviceType.smartphone: 'smartphone',
+  DeviceType.speaker: 'speaker',
+  DeviceType.tv: 'tv',
+  DeviceType.avr: 'avr',
+  DeviceType.stb: 'stb',
+  DeviceType.audiodongle: 'audiodongle',
+  DeviceType.gameconsole: 'gameconsole',
+  DeviceType.castvideo: 'castvideo',
+  DeviceType.castaudio: 'castaudio',
+  DeviceType.automobile: 'automobile',
+  DeviceType.unknown: 'unknown'
+};
+
 SpotifyError _$SpotifyErrorFromJson(Map<String, dynamic> json) {
   return SpotifyError()
     ..status = json['status'] as int
