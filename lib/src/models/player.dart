@@ -29,6 +29,8 @@ class Player extends Object {
 
   /// If something is currently playing.
   bool is_playing;
+
+  SpotifyDevice device;
 }
 
 @JsonSerializable(createToJson: false)
